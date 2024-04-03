@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
 
@@ -12,11 +13,12 @@ import com.pwr.app20_20_20.BottomNavigationBar
 @Composable
 fun ToDoListScreen(navController: NavController) {
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
+        bottomBar = { BottomNavigationBar(navController) },
+        containerColor = Color.Black
     )
     {
         Column {
-            Text(text = "To do list Screen")
+            Text(text = "To do list Screen", color = Color.White)
         }
     }
 }
