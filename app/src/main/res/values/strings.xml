@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">20-20-20</string>
+    <string name="app_name">20–20–20</string>
+    <string name="what_is_20_20_20_rule">What is 20–20–20 rule?</string>
+    <string name="what_is_20_20_20_rule_description">If you find yourself gazing at screens all day, the 20–20–20 rule may help. Every 20 minutes spent using a screen, try to look away at something that is 20 feet away for a total of 20 seconds. This is how long it takes for your eyes to reset and relax. Unless you have a tape measure you probably won’t be able to accurately measure 20 feet. Being exact isn’t the key to the 20–20–20 rule for eyestrain. You should just try to focus on something far away from you. Consider looking out a window at an object that seems far away, like a tree or a building across the street.</string>
+    <string name="how_to_use_to_do_list">How to use to do list?</string>
+    <string name="how_to_use_to_do_list_description">Eye care to do list consists of exercises that should be done daily to reduce eye strain. Each entry on the list comes with a comprehensive tutorial explaining how to perform the specific exercise properly. You can adjust the number of exercises per day in settings. Your eyes will thank you!</string>
+    <string name="benefits_of_eye_exercises">Benefits of eye exercises</string>
+    <string name="benefits_of_eye_exercises_description">Eye exercises can significantly alleviate eye strain, especially for those spending extended periods in front of screens. Regular practice improves focus, enhances vision clarity, and may reduce the risk of age-related vision problems. Engaging in these exercises promotes overall eye health, ensuring long-term visual comfort and performance.</string>
 </resources>

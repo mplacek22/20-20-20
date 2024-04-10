@@ -10,8 +10,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -33,14 +35,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.ContentAlpha
 import com.pwr.app20_20_20.BottomNavigationBar
+import com.pwr.app20_20_20.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -53,11 +57,15 @@ fun HowToUseScreen (navController: NavController){
         Column (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(dimensionResource(id = R.dimen.padding)),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
-            ExpandableCard(title = "What is 20-20-20?", description = "Lorem Ipsum")
+            ExpandableCard(title = stringResource(R.string.what_is_20_20_20_rule), description = stringResource(R.string.what_is_20_20_20_rule_description))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing)))
+            ExpandableCard(title = stringResource(R.string.how_to_use_to_do_list), description = stringResource(R.string.how_to_use_to_do_list_description))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing)))
+            ExpandableCard(title = stringResource(R.string.benefits_of_eye_exercises), description = stringResource(R.string.benefits_of_eye_exercises_description))
         }
     }
 }
@@ -71,9 +79,8 @@ fun ExpandableCard(
     description: String,
     descriptionFontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     descriptionFontWeight: FontWeight = FontWeight.Normal,
-    descriptionMaxLines: Int = 4,
     shape: androidx.compose.ui.graphics.Shape = CardDefaults.elevatedShape,
-    padding: Dp = 12.dp
+    padding: Dp = dimensionResource(id = R.dimen.padding)
 ) {
     var expandedState by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState(
@@ -131,7 +138,6 @@ fun ExpandableCard(
                     text = description,
                     fontSize = descriptionFontSize,
                     fontWeight = descriptionFontWeight,
-                    maxLines = descriptionMaxLines,
                     overflow = TextOverflow.Ellipsis
                 )
             }
