@@ -16,7 +16,7 @@ fun Navigation (viewModel : TimerViewModel){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = NavItem.HomeScreen.route){
         composable(route = NavItem.HomeScreen.route){
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, viewModel = viewModel)
         }
         composable(route = NavItem.SettingsScreen.route){
             SettingsScreen(navController = navController, viewModel = viewModel)

@@ -7,9 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +14,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,11 +25,12 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pwr.app20_20_20.viewmodels.TimerViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.cos
@@ -43,7 +38,15 @@ import kotlin.math.sin
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController, viewModel: TimerViewModel){
+
+    val numberOfCycles by viewModel.numberOfCycles.collectAsState()
+    val focusTime by viewModel.focusTime.collectAsState()
+    val restTime by viewModel.restTime.collectAsState()
+
+    val focusMillis = (focusTime.minutes * 60 + focusTime.seconds) * 1000L
+    val restMillis = (restTime.minutes * 60 + restTime.seconds) * 1000L
+
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) },
         containerColor = Color.Black
@@ -54,16 +57,32 @@ fun HomeScreen(navController: NavController){
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
+
+            val (mode, setMode) = remember { mutableStateOf("Focus") }
+
+            Text(
+                text = "$mode Mode",
+                color = Color.White,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
             Timer(
-                totalTime = 20L * 60L * 1000L, // 60 seconds
-                handleColor = Color.Green,
-                inactiveBarColor = Color.DarkGray,
-                activeBarColor = Color(0xFF37B900),
-                modifier = Modifier
-                    .size(250.dp)
-                    .align(Alignment.CenterHorizontally),
-                initialValue = 1f,
-                strokeWidth = 11.dp
+                focusTime = focusMillis,
+                restTime = restMillis,
+                cycles = numberOfCycles,
+//                focusTime = 3L * 1000L,
+//                restTime = 2L * 1000L,
+//                cycles = 4,
+                handleColorFocus = Color.Green,
+                handleColorRest = Color.Red,
+                activeBarColorFocus = Color(0xFF37B900),
+                activeBarColorRest = Color(0xFFFF9800),
+                modifier = Modifier.size(250.dp),
+                strokeWidth = 11.dp,
+                mode = mode,
+                setMode = setMode
             )
         }
     }
@@ -71,48 +90,59 @@ fun HomeScreen(navController: NavController){
 
 @Composable
 fun Timer(
-    totalTime: Long,
-    handleColor: Color,
-    inactiveBarColor: Color,
-    activeBarColor: Color,
+    focusTime: Long,
+    restTime: Long,
+    cycles: Int,
+    handleColorFocus: Color = Color.Green,
+    handleColorRest: Color = Color.Red,
+    inactiveBarColor: Color = Color.DarkGray,
+    activeBarColorFocus: Color = Color(0xFF37B900),
+    activeBarColorRest: Color = Color(0xFFF44336),
     modifier: Modifier = Modifier,
-    initialValue: Float = 1f,
-    strokeWidth: Dp = 5.dp
+    strokeWidth: Dp = 5.dp,
+    mode: String,
+    setMode: (String) -> Unit
 ) {
-    var size by remember {
-        mutableStateOf(IntSize.Zero)
-    }
-    var value by remember {
-        mutableStateOf(initialValue)
-    }
-    var currentTime by remember {
-        mutableStateOf(totalTime)
-    }
-    var isTimerRunning by remember {
-        mutableStateOf(false)
-    }
+    var size by remember { mutableStateOf(IntSize.Zero) }
+    var value by remember { mutableStateOf(1f) }
+    var currentTime by remember { mutableStateOf(focusTime) }
+    var isTimerRunning by remember { mutableStateOf(false) }
+    var currentCycle by remember { mutableStateOf(0) }
+    var isFocusTime by remember { mutableStateOf(true) }
+
     LaunchedEffect(key1 = currentTime, key2 = isTimerRunning) {
-        if(currentTime > 0 && isTimerRunning) {
+        if (currentTime > 0 && isTimerRunning) {
             delay(100L)
             currentTime -= 100L
-            value = currentTime / totalTime.toFloat()
+            value = currentTime.toFloat() / (if (isFocusTime) focusTime else restTime)
+        } else if (isTimerRunning && currentCycle < cycles) {
+            if (isFocusTime) {
+                isFocusTime = false
+                currentTime = restTime
+                setMode("Rest")
+            } else {
+                isFocusTime = true
+                currentTime = focusTime
+                currentCycle++
+                setMode("Focus")
+            }
+        } else if (currentCycle >= cycles) {
+            isTimerRunning = false
         }
     }
+
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .onSizeChanged {
-                size = it
-            }.clickable {
-                if(currentTime <= 0L) {
-                    currentTime = totalTime
-                    isTimerRunning = true
-                } else {
-                    isTimerRunning = !isTimerRunning
-                }
-
-
+        modifier = modifier.onSizeChanged {
+            size = it
+        }.clickable {
+            if (!isTimerRunning || currentTime <= 0L) {
+                isTimerRunning = true
+                currentTime = if (isFocusTime) focusTime else restTime
+            } else {
+                isTimerRunning = !isTimerRunning
             }
+        }
     ) {
         Canvas(modifier = modifier) {
             drawArc(
@@ -124,7 +154,7 @@ fun Timer(
                 style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
             )
             drawArc(
-                color = activeBarColor,
+                color = if (isFocusTime) activeBarColorFocus else activeBarColorRest,
                 startAngle = -215f,
                 sweepAngle = 250f * value,
                 useCenter = false,
@@ -139,7 +169,7 @@ fun Timer(
             drawPoints(
                 listOf(Offset(center.x + a, center.y + b)),
                 pointMode = PointMode.Points,
-                color = handleColor,
+                color = if (isFocusTime) handleColorFocus else handleColorRest,
                 strokeWidth = (strokeWidth * 3f).toPx(),
                 cap = StrokeCap.Round
             )
@@ -150,25 +180,12 @@ fun Timer(
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-        if (isTimerRunning) {
-            Text(
-                text = "Press to stop",
-                fontSize = 14.sp,
-                color = Color.White,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp)
-            )
-        } else {
-            Text(
-                text = "Press to start",
-                fontSize = 14.sp,
-                color = Color.White,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp)
-            )
-        }
+        Text(
+            text = if (isTimerRunning) "Press to stop" else "Press to start",
+            fontSize = 14.sp,
+            color = Color.White,
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp)
+        )
     }
 }
 
