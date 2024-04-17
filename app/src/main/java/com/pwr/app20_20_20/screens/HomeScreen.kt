@@ -11,9 +11,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material3.Button
@@ -53,7 +55,7 @@ fun HomeScreen(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Timer(
-                totalTime = 60L * 1000L, // 60 seconds
+                totalTime = 20L * 60L * 1000L, // 60 seconds
                 handleColor = Color.Green,
                 inactiveBarColor = Color.DarkGray,
                 activeBarColor = Color(0xFF37B900),
@@ -101,6 +103,15 @@ fun Timer(
         modifier = modifier
             .onSizeChanged {
                 size = it
+            }.clickable {
+                if(currentTime <= 0L) {
+                    currentTime = totalTime
+                    isTimerRunning = true
+                } else {
+                    isTimerRunning = !isTimerRunning
+                }
+
+
             }
     ) {
         Canvas(modifier = modifier) {
@@ -134,34 +145,40 @@ fun Timer(
             )
         }
         Text(
-            text = (currentTime / 1000L).toString(),
+            text = formatTime(currentTime),
             fontSize = 44.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-        Button(
-            onClick = {
-                if(currentTime <= 0L) {
-                    currentTime = totalTime
-                    isTimerRunning = true
-                } else {
-                    isTimerRunning = !isTimerRunning
-                }
-            },
-            modifier = Modifier.align(Alignment.BottomCenter),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (!isTimerRunning || currentTime <= 0L) {
-                    Color.Green
-                } else {
-                    Color.Red
-                }
-            )
-        ) {
+        if (isTimerRunning) {
             Text(
-                text = if (isTimerRunning && currentTime >= 0L) "Stop"
-                else if (!isTimerRunning && currentTime >= 0L) "Start"
-                else "Restart"
+                text = "Press to stop",
+                fontSize = 14.sp,
+                color = Color.White,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp)
+            )
+        } else {
+            Text(
+                text = "Press to start",
+                fontSize = 14.sp,
+                color = Color.White,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp)
             )
         }
+    }
+}
+
+fun formatTime(timeInMillis: Long): String {
+    val totalSeconds = timeInMillis / 1000
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+    return if (minutes > 0) {
+        String.format("%02d:%02d", minutes, seconds)
+    } else {
+        String.format("%02d", seconds)
     }
 }
