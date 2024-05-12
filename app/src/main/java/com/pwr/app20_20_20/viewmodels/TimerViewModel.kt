@@ -20,7 +20,7 @@ class TimerViewModel : ViewModel() {
     private val _restTime = MutableStateFlow(Time(0, 20))
     val restTime: StateFlow<Time> = _restTime.asStateFlow()
 
-    val cycleRange = 1..4
+    val cycleRange = 1..10
     val timeRange = 0..59 // Assuming you want a range of 0 to 59 for both minutes and seconds
 
     fun setNumberOfCycles(cycles: Int) {

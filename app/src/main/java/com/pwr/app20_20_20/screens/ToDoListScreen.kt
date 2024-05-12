@@ -11,24 +11,29 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
+import com.pwr.app20_20_20.R
+import com.pwr.app20_20_20.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ToDoListScreen(navController: NavController) {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) },
+        topBar = { TopBar() },
         containerColor = Color.Black
-    ) {
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
-        ) {
+                .padding(innerPadding)
+                .padding(dimensionResource(id = R.dimen.padding))
+            ) {
             Text(
                 text = "Eye Care To Do List",
                 color = Color.White,
