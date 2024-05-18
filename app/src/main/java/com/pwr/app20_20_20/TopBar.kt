@@ -23,7 +23,7 @@ fun TopBar(title: String = stringResource(id = R.string.app_name)) {
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
             }

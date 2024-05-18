@@ -29,10 +29,12 @@ fun BottomNavigationBar(navController: NavController) {
             val selected = item.route == currentRoute
             NavigationBarItem(
                 icon = {
-                    Icon(
-                        if (selected) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.title
-                    )
+                    (if (selected) item.selectedIcon else item.unselectedIcon)?.let {
+                        Icon(
+                            it,
+                            contentDescription = item.title
+                        )
+                    }
                 },
                 label = { Text(item.title) },
                 selected = selected,
