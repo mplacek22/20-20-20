@@ -3,6 +3,7 @@ package com.pwr.app20_20_20.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import com.pwr.app20_20_20.storage.EyeExercise
 
 class VideoViewModel(
     eyeExercise: EyeExercise,

@@ -11,6 +11,7 @@ composeBom = "2024.04.00"
 materialIconsExtended = "1.6.7"
 navigationCompose = "2.7.7"
 composeMaterial = "1.3.1"
+roomRuntime = "2.6.1"
 uiTextGoogleFonts = "1.6.7"
 media3Common = "1.3.1"
 media3Ui = "1.3.1"
@@ -19,6 +20,9 @@ media3Exoplayer = "1.3.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

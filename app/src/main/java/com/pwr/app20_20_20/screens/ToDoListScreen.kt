@@ -22,15 +22,16 @@ import com.pwr.app20_20_20.BottomNavigationBar
 import com.pwr.app20_20_20.NavItem
 import com.pwr.app20_20_20.R
 import com.pwr.app20_20_20.TopBar
-import com.pwr.app20_20_20.viewmodels.EyeExercise
+import com.pwr.app20_20_20.storage.EyeExercise
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModel
 import com.pwr.app20_20_20.viewmodels.TimerViewModel
 import kotlinx.coroutines.flow.forEach
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ToDoListScreen(navController: NavController, exerciseViewModel: EyeExerciseViewModel) {
-    val exercises = exerciseViewModel.exercises.collectAsState().value
+    val exercises by exerciseViewModel.exercises.collectAsState(initial = emptyList())
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) },
         topBar = { TopBar() },
@@ -41,7 +42,7 @@ fun ToDoListScreen(navController: NavController, exerciseViewModel: EyeExerciseV
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(dimensionResource(id = R.dimen.padding))
-            ) {
+        ) {
             items(exercises) { exercise ->
                 ExerciseItem(exerciseViewModel, exercise, navController)
             }

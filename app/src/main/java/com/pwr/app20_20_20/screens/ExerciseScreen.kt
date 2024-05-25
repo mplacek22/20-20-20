@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
 import com.pwr.app20_20_20.R
 import com.pwr.app20_20_20.TopBar
-import com.pwr.app20_20_20.viewmodels.EyeExercise
+import com.pwr.app20_20_20.storage.EyeExercise
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModel
 import com.pwr.app20_20_20.viewmodels.VideoViewModel
 import java.time.Clock
@@ -37,35 +37,38 @@ import java.time.LocalDate
 
 @Composable
 fun ExerciseScreen(viewModel: EyeExerciseViewModel, exerciseId: String, navController: NavController) {
-    val exercise = viewModel.getExercise(exerciseId)
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) },
-        topBar = { TopBar(title=exercise.name) },
-        containerColor = Color.Black)
-    { innerPadding->
-        LazyColumn (
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(dimensionResource(id = R.dimen.padding))
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ){
-            item {
-                VideoPlayer(viewModel = VideoViewModel(exercise,
-                    player = ExoPlayer.Builder(navController.context).build().apply {
-                        repeatMode = Player.REPEAT_MODE_ALL
-                    }))
-            }
-            item {
-                Text(
-                    text = exercise.instruction,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            }
-            item {
-                ExerciseButton(viewModel = viewModel, exercise = exercise)
+    val exercise by viewModel.getExercise(exerciseId).collectAsState(initial = null)
+
+    exercise?.let {
+        Scaffold(
+            bottomBar = { BottomNavigationBar(navController) },
+            topBar = { TopBar(title=it.name) },
+            containerColor = Color.Black
+        ) { innerPadding->
+            LazyColumn (
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(dimensionResource(id = R.dimen.padding))
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                item {
+                    VideoPlayer(viewModel = VideoViewModel(it,
+                        player = ExoPlayer.Builder(navController.context).build().apply {
+                            repeatMode = Player.REPEAT_MODE_ALL
+                        }))
+                }
+                item {
+                    Text(
+                        text = it.instruction,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                item {
+                    ExerciseButton(viewModel = viewModel, exercise = it)
+                }
             }
         }
     }
