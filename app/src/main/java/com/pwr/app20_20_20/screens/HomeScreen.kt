@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,45 +31,43 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
 import com.pwr.app20_20_20.R
 import com.pwr.app20_20_20.TopBar
+import com.pwr.app20_20_20.viewmodels.TimerMode
 import com.pwr.app20_20_20.viewmodels.TimerViewModel
-import kotlinx.coroutines.delay
 import kotlin.math.PI
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: TimerViewModel){
+fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewModel()) {
 
     val numberOfCycles by viewModel.numberOfCycles.collectAsState()
     val focusTime by viewModel.focusTime.collectAsState()
     val restTime by viewModel.restTime.collectAsState()
-
-    val focusMillis = (focusTime.minutes * 60 + focusTime.seconds) * 1000L
-    val restMillis = (restTime.minutes * 60 + restTime.seconds) * 1000L
+    val currentTime by viewModel.currentTime.collectAsState()
+    val isTimerRunning by viewModel.isTimerRunning.collectAsState()
+    val mode by viewModel.mode.collectAsState()
+    val currentCycle by viewModel.currentCycle.collectAsState()
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) },
-        topBar = { TopBar()},
+        topBar = { TopBar() },
         containerColor = Color.Black
     ) { innerPadding ->
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(dimensionResource(id = R.dimen.padding)),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
-
-            val (mode, setMode) = remember { mutableStateOf("Focus") }
-            val (cycles, setCycles) = remember { mutableStateOf(numberOfCycles) }
-
+        ) {
             Text(
-                text = "$mode Mode",
+                text = "${mode.name} Mode",
                 color = Color.White,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
@@ -78,16 +75,17 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel){
             )
 
             Text(
-                text = "$cycles cycles left",
+                text = "${numberOfCycles - currentCycle} cycles left",
                 color = Color.White,
                 fontSize = 17.sp,
                 modifier = Modifier.padding(bottom = 100.dp)
             )
 
             Timer(
-                focusTime = focusMillis,
-                restTime = restMillis,
-                cycles = numberOfCycles,
+                focusTime = viewModel.calculateMillis(focusTime),
+                restTime = viewModel.calculateMillis(restTime),
+                currentTime = currentTime,
+                isTimerRunning = isTimerRunning,
                 handleColorFocus = Color(0xFF0FB04C),
                 handleColorRest = Color(0xFFFF9800),
                 activeBarColorFocus = Color(0xFF0FB04C),
@@ -95,20 +93,21 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel){
                 modifier = Modifier.size(250.dp),
                 strokeWidth = 11.dp,
                 mode = mode,
-                setMode = setMode,
-                setCycles = setCycles
+                startTimer = { viewModel.startTimer() },
+                stopTimer = { viewModel.stopTimer() },
+                resetTimer = { viewModel.resetTimer() }
             )
         }
     }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Timer(
     focusTime: Long,
     restTime: Long,
-    cycles: Int,
+    currentTime: Long,
+    isTimerRunning: Boolean,
     handleColorFocus: Color = Color(0xFF0FB04C),
     handleColorRest: Color = Color.Red,
     inactiveBarColor: Color = Color.DarkGray,
@@ -116,38 +115,13 @@ fun Timer(
     activeBarColorRest: Color = Color(0xFFF44336),
     modifier: Modifier = Modifier,
     strokeWidth: Dp = 5.dp,
-    mode: String,
-    setMode: (String) -> Unit,
-    setCycles: (Int) -> Unit
+    mode: TimerMode,
+    startTimer: () -> Unit,
+    stopTimer: () -> Unit,
+    resetTimer: () -> Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
-    var value by remember { mutableStateOf(1f) }
-    var currentTime by remember { mutableStateOf(focusTime) }
-    var isTimerRunning by remember { mutableStateOf(false) }
-    var currentCycle by remember { mutableStateOf(0) }
-    var isFocusTime by remember { mutableStateOf(true) }
-
-    LaunchedEffect(key1 = currentTime, key2 = isTimerRunning) {
-        if (currentTime > 0 && isTimerRunning) {
-            delay(100L)
-            currentTime -= 100L
-            value = currentTime.toFloat() / (if (isFocusTime) focusTime else restTime)
-        } else if (isTimerRunning && currentCycle < cycles) {
-            if (isFocusTime) {
-                isFocusTime = false
-                currentTime = restTime
-                setMode("Rest")
-            } else {
-                currentCycle++
-                isFocusTime = true
-                currentTime = focusTime
-                setCycles(cycles - currentCycle)
-                setMode("Focus")
-            }
-        } else if (currentCycle >= cycles) {
-            isTimerRunning = false
-        }
-    }
+    val value = currentTime.toFloat() / (if (mode == TimerMode.Focus) focusTime else restTime)
 
     Box(
         contentAlignment = Alignment.Center,
@@ -156,17 +130,18 @@ fun Timer(
         }.combinedClickable(
             onClick = {
                 if (currentTime <= 0L) {
-                    currentTime = if (isFocusTime) focusTime else restTime
-                    currentCycle = 0
-                    setCycles(cycles - currentCycle)
+                    resetTimer()
+                } else {
+                    if (isTimerRunning) {
+                        stopTimer()
+                    } else {
+                        startTimer()
+                    }
                 }
-                isTimerRunning = !isTimerRunning
             },
             onLongClick = {
-                if(!isTimerRunning) {
-                    currentTime = focusTime
-                    currentCycle = 0
-                    setCycles(cycles)
+                if (!isTimerRunning) {
+                    resetTimer()
                 }
             },
         )
@@ -181,7 +156,7 @@ fun Timer(
                 style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
             )
             drawArc(
-                color = if (isFocusTime) activeBarColorFocus else activeBarColorRest,
+                color = if (mode == TimerMode.Focus) activeBarColorFocus else activeBarColorRest,
                 startAngle = -215f,
                 sweepAngle = 250f * value,
                 useCenter = false,
@@ -196,7 +171,7 @@ fun Timer(
             drawPoints(
                 listOf(Offset(center.x + a, center.y + b)),
                 pointMode = PointMode.Points,
-                color = if (isFocusTime) handleColorFocus else handleColorRest,
+                color = if (mode == TimerMode.Focus) handleColorFocus else handleColorRest,
                 strokeWidth = (strokeWidth * 3f).toPx(),
                 cap = StrokeCap.Round
             )
