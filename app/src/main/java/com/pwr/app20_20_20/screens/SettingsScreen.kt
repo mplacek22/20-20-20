@@ -29,11 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
@@ -62,7 +62,7 @@ fun SettingsScreen(navController: NavController, viewModel: TimerViewModel) {
         ) {
             item {
                 Text(
-                    text = "Number of cycles: $numberOfCycles",
+                    text = stringResource(R.string.number_of_cycles, numberOfCycles),
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.White
                 )
@@ -81,7 +81,7 @@ fun SettingsScreen(navController: NavController, viewModel: TimerViewModel) {
             item {
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
                 Text(
-                    text = "Focus time",
+                    text = stringResource(R.string.focus_time),
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.White
                 )
@@ -98,7 +98,7 @@ fun SettingsScreen(navController: NavController, viewModel: TimerViewModel) {
             item {
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
                 Text(
-                    text = "Rest time",
+                    text = stringResource(R.string.rest_time),
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.White
                 )
@@ -130,15 +130,19 @@ fun TimeEditor(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            TimeInputField(value = minutes, onValueChange = onMinutesChange, label = "Minutes", range = range)
+            TimeInputField(value = minutes, onValueChange = onMinutesChange, label = stringResource(
+                R.string.minutes
+            ), range = range)
             Text(
                 text = ":",
                 color = Color.White,
-                fontSize = 40.sp,
+                fontSize = dimensionResource(id = R.dimen.time_separator_text_size).value.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding))
             )
-            TimeInputField(value = seconds, onValueChange = onSecondsChange, label = "Seconds", range = range)
+            TimeInputField(value = seconds, onValueChange = onSecondsChange, label = stringResource(
+                R.string.seconds
+            ), range = range)
         }
     }
 }
@@ -154,8 +158,11 @@ fun TimeInputField(value: Int, onValueChange: (Int) -> Unit, label: String, rang
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(100.dp)
-                .background(Color.Transparent, RoundedCornerShape(8.dp))
+                .size(dimensionResource(id = R.dimen.time_input_box_size))
+                .background(
+                    Color.Transparent,
+                    RoundedCornerShape(dimensionResource(id = R.dimen.rounded_corner))
+                )
         ) {
             OutlinedTextField(
                 value = textValue,
@@ -172,7 +179,7 @@ fun TimeInputField(value: Int, onValueChange: (Int) -> Unit, label: String, rang
                     )
                 },
                 textStyle = TextStyle(
-                    fontSize = 24.sp,
+                    fontSize = dimensionResource(id = R.dimen.time_input_text_size).value.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center
                 ),

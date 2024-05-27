@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="time_separator_text_size">40sp</dimen>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="padding">20dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="elevation">6dp</dimen>
+    <dimen name="time_input_box_size">100dp</dimen>
+    <dimen name="rounded_corner">8dp</dimen>
+    <dimen name="top_padding">50dp</dimen>
+    <dimen name="bottom_padding">15dp</dimen>
+    <dimen name="cycles_text_bottom_padding">100dp</dimen>
+    <dimen name="text_font_size">40sp</dimen>
+    <dimen name="cycles_text_font_size">17sp</dimen>
+    <dimen name="timer_size">250dp</dimen>
+    <dimen name="stroke_width">11dp</dimen>
+    <dimen name="timer_text_font_size">44sp</dimen>
+    <dimen name="status_text_font_size">14sp</dimen>
+    <dimen name="status_text_bottom_padding">8dp</dimen>
+    <dimen name="time_input_text_size">24sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+</resources>

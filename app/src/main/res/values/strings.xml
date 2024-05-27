@@ -6,4 +6,14 @@
     <string name="how_to_use_to_do_list_description">Eye care to do list consists of exercises that should be done daily to reduce eye strain. Each entry on the list comes with a comprehensive tutorial explaining how to perform the specific exercise properly. You can adjust the number of exercises per day in settings. Your eyes will thank you!</string>
     <string name="benefits_of_eye_exercises">Benefits of eye exercises</string>
     <string name="benefits_of_eye_exercises_description">Eye exercises can significantly alleviate eye strain, especially for those spending extended periods in front of screens. Regular practice improves focus, enhances vision clarity, and may reduce the risk of age-related vision problems. Engaging in these exercises promotes overall eye health, ensuring long-term visual comfort and performance.</string>
+    <string name="number_of_cycles">Number of cycles: %1$s</string>
+    <string name="focus_time">Focus time</string>
+    <string name="rest_time">Rest time</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
+    <string name="mode">%1$s Mode</string>
+    <string name="cycles_left">%1$s cycles left</string>
+    <string name="press_to_stop">Press to stop</string>
+    <string name="press_to_start">Press to start</string>
+    <string name="exercise_done">Exercise done</string>
 </resources>

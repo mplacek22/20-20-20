@@ -26,10 +26,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -67,18 +67,21 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewMod
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "${mode.name} Mode",
+                text = stringResource(R.string.mode, mode.name),
                 color = Color.White,
-                fontSize = 40.sp,
+                fontSize = dimensionResource(id = R.dimen.text_font_size).value.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 15.dp, top = 50.dp)
+                modifier = Modifier.padding(
+                    bottom = dimensionResource(id = R.dimen.bottom_padding),
+                    top = dimensionResource(id = R.dimen.top_padding)
+                )
             )
 
             Text(
-                text = "${numberOfCycles - currentCycle} cycles left",
+                text = stringResource(R.string.cycles_left, numberOfCycles - currentCycle),
                 color = Color.White,
-                fontSize = 17.sp,
-                modifier = Modifier.padding(bottom = 100.dp)
+                fontSize = dimensionResource(id = R.dimen.cycles_text_font_size).value.sp,
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.cycles_text_bottom_padding))
             )
 
             Timer(
@@ -90,8 +93,8 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewMod
                 handleColorRest = Color(0xFFFF9800),
                 activeBarColorFocus = Color(0xFF0FB04C),
                 activeBarColorRest = Color(0xFFFF9800),
-                modifier = Modifier.size(250.dp),
-                strokeWidth = 11.dp,
+                modifier = Modifier.size(dimensionResource(id = R.dimen.timer_size)),
+                strokeWidth = dimensionResource(id = R.dimen.stroke_width),
                 mode = mode,
                 startTimer = { viewModel.startTimer() },
                 stopTimer = { viewModel.stopTimer() },
@@ -114,7 +117,7 @@ fun Timer(
     activeBarColorFocus: Color = Color(0xFF0FB04C),
     activeBarColorRest: Color = Color(0xFFF44336),
     modifier: Modifier = Modifier,
-    strokeWidth: Dp = 5.dp,
+    strokeWidth: Dp = dimensionResource(id = R.dimen.stroke_width),
     mode: TimerMode,
     startTimer: () -> Unit,
     stopTimer: () -> Unit,
@@ -125,26 +128,28 @@ fun Timer(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier.onSizeChanged {
-            size = it
-        }.combinedClickable(
-            onClick = {
-                if (currentTime <= 0L) {
-                    resetTimer()
-                } else {
-                    if (isTimerRunning) {
-                        stopTimer()
+        modifier = modifier
+            .onSizeChanged {
+                size = it
+            }
+            .combinedClickable(
+                onClick = {
+                    if (currentTime <= 0L) {
+                        resetTimer()
                     } else {
-                        startTimer()
+                        if (isTimerRunning) {
+                            stopTimer()
+                        } else {
+                            startTimer()
+                        }
                     }
-                }
-            },
-            onLongClick = {
-                if (!isTimerRunning) {
-                    resetTimer()
-                }
-            },
-        )
+                },
+                onLongClick = {
+                    if (!isTimerRunning) {
+                        resetTimer()
+                    }
+                },
+            )
     ) {
         Canvas(modifier = modifier) {
             drawArc(
@@ -178,15 +183,17 @@ fun Timer(
         }
         Text(
             text = formatTime(currentTime),
-            fontSize = 44.sp,
+            fontSize = dimensionResource(id = R.dimen.timer_text_font_size).value.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
         Text(
-            text = if (isTimerRunning) "Press to stop" else "Press to start",
-            fontSize = 14.sp,
+            text = if (isTimerRunning) stringResource(R.string.press_to_stop) else stringResource(R.string.press_to_start),
+            fontSize = dimensionResource(id = R.dimen.status_text_font_size).value.sp,
             color = Color.White,
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = dimensionResource(id = R.dimen.status_text_bottom_padding))
         )
     }
 }

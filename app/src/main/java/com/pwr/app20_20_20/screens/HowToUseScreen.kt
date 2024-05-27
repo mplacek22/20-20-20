@@ -38,7 +38,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.ContentAlpha
 import com.pwr.app20_20_20.BottomNavigationBar
@@ -110,7 +109,7 @@ fun ExpandableCard(
         },
         shape = shape,
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = dimensionResource(id = R.dimen.elevation)
         ),
         ) {
             Column(
