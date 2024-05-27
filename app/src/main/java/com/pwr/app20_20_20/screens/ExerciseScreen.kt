@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,10 +42,10 @@ fun ExerciseScreen(viewModel: EyeExerciseViewModel, exerciseId: String, navContr
     exercise?.let {
         Scaffold(
             bottomBar = { BottomNavigationBar(navController) },
-            topBar = { TopBar(title=it.name) },
+            topBar = { TopBar(title = it.name) },
             containerColor = Color.Black
-        ) { innerPadding->
-            LazyColumn (
+        ) { innerPadding ->
+            LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(dimensionResource(id = R.dimen.padding))
@@ -54,10 +54,18 @@ fun ExerciseScreen(viewModel: EyeExerciseViewModel, exerciseId: String, navContr
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 item {
-                    VideoPlayer(viewModel = VideoViewModel(it,
-                        player = ExoPlayer.Builder(navController.context).build().apply {
+                    val player = remember {
+                        ExoPlayer.Builder(navController.context).build().apply {
                             repeatMode = Player.REPEAT_MODE_ALL
-                        }))
+                        }
+                    }
+                    VideoPlayer(viewModel = VideoViewModel(it, player))
+                    DisposableEffect(Unit) {
+                        onDispose {
+                            player.stop()
+                            player.release()
+                        }
+                    }
                 }
                 item {
                     Text(
@@ -74,12 +82,9 @@ fun ExerciseScreen(viewModel: EyeExerciseViewModel, exerciseId: String, navContr
     }
 }
 
-
 @Composable
-private fun VideoPlayer(viewModel: VideoViewModel){
-    val lifecycle by remember {
-        mutableStateOf(Lifecycle.Event.ON_CREATE)
-    }
+private fun VideoPlayer(viewModel: VideoViewModel) {
+    val lifecycle by remember { mutableStateOf(Lifecycle.Event.ON_CREATE) }
     AndroidView(
         factory = { context ->
             PlayerView(context).also {
@@ -108,13 +113,13 @@ private fun VideoPlayer(viewModel: VideoViewModel){
 fun ExerciseButton(viewModel: EyeExerciseViewModel, exercise: EyeExercise) {
     val history by viewModel.history.collectAsState()
     val today = LocalDate.now(Clock.systemUTC())
-    val isEnabled = !(history[exercise.id]?.contains(today) ?: false)
+    val isDone = history[exercise.id]?.contains(today) ?: false
 
     Button(
         onClick = { viewModel.recordExerciseDone(exercise.id) },
         modifier = Modifier.fillMaxWidth(0.75f),
-        enabled = isEnabled,
+        enabled = !isDone,
     ) {
-        Text("Mark as done")
+        Text(if (isDone) "Done" else "Mark as done")
     }
 }
