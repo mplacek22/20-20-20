@@ -1,5 +1,7 @@
 package com.pwr.app20_20_20.screens
 
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
@@ -26,10 +29,13 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.pwr.app20_20_20.BottomNavigationBar
 import com.pwr.app20_20_20.R
 import com.pwr.app20_20_20.TopBar
 import com.pwr.app20_20_20.storage.EyeExercise
+import com.pwr.app20_20_20.storage.MediaType
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModel
 import com.pwr.app20_20_20.viewmodels.VideoViewModel
 import java.time.Clock
@@ -54,16 +60,23 @@ fun ExerciseScreen(viewModel: EyeExerciseViewModel, exerciseId: String, navContr
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 item {
-                    val player = remember {
-                        ExoPlayer.Builder(navController.context).build().apply {
-                            repeatMode = Player.REPEAT_MODE_ALL
+                    when (it.mediaType) {
+                        MediaType.VIDEO -> {
+                            val player = remember {
+                                ExoPlayer.Builder(navController.context).build().apply {
+                                    repeatMode = Player.REPEAT_MODE_ALL
+                                }
+                            }
+                            VideoPlayer(viewModel = VideoViewModel(it, player))
+                            DisposableEffect(Unit) {
+                                onDispose {
+                                    player.stop()
+                                    player.release()
+                                }
+                            }
                         }
-                    }
-                    VideoPlayer(viewModel = VideoViewModel(it, player))
-                    DisposableEffect(Unit) {
-                        onDispose {
-                            player.stop()
-                            player.release()
+                        MediaType.IMAGE -> {
+                            ImagePlayer(mediaUri = it.mediaUri)
                         }
                     }
                 }
@@ -103,6 +116,18 @@ private fun VideoPlayer(viewModel: VideoViewModel) {
                 else -> Unit
             }
         },
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(16 / 9f)
+    )
+}
+
+@Composable
+private fun ImagePlayer(mediaUri: Uri) {
+    Image(
+        painter = rememberAsyncImagePainter(mediaUri),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(16 / 9f)

@@ -19,7 +19,7 @@ import java.time.LocalDate
 //    val id: String,
 //    val name: String,
 //    val instruction: String,
-//    val mediaUri: Uri // This could be a URL to a video or image
+//    val mediaUri: Uri
 //)
 
 class EyeExerciseViewModel(context: Context) : ViewModel() {

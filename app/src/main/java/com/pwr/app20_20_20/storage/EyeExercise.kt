@@ -10,5 +10,11 @@ data class EyeExercise(
     val id: String,
     val name: String,
     val instruction: String,
-    val mediaUri: Uri
+    val mediaUri: Uri,
+    val mediaType: MediaType
 )
+
+enum class MediaType {
+    VIDEO,
+    IMAGE
+}
