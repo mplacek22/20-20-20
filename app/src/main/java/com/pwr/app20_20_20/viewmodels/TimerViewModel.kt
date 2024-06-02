@@ -2,6 +2,8 @@ package com.pwr.app20_20_20.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pwr.app20_20_20.MediaPlayerManager
+import com.pwr.app20_20_20.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,10 +20,10 @@ class TimerViewModel : ViewModel() {
     private val _numberOfCycles = MutableStateFlow(1)
     val numberOfCycles: StateFlow<Int> = _numberOfCycles.asStateFlow()
 
-    private val _focusTime = MutableStateFlow(Time(0, 5))
+    private val _focusTime = MutableStateFlow(Time(20, 0))
     val focusTime: StateFlow<Time> = _focusTime.asStateFlow()
 
-    private val _restTime = MutableStateFlow(Time(0, 3))
+    private val _restTime = MutableStateFlow(Time(0, 20))
     val restTime: StateFlow<Time> = _restTime.asStateFlow()
 
     private val _currentTime = MutableStateFlow(0L)
@@ -92,11 +94,12 @@ class TimerViewModel : ViewModel() {
         return (time.minutes * 60 + time.seconds) * 1000L
     }
 
-    fun startTimer() {
+    fun startTimer(mediaPlayerManager: MediaPlayerManager) {
         if (!_isTimerRunning.value) {
             _isTimerRunning.value = true
+            mediaPlayerManager.playSound(R.raw.focus_start)
             viewModelScope.launch {
-                runTimer()
+                runTimer(mediaPlayerManager)
             }
         }
     }
@@ -112,7 +115,7 @@ class TimerViewModel : ViewModel() {
         _mode.value = TimerMode.Focus
     }
 
-    private suspend fun runTimer() {
+    private suspend fun runTimer(mediaPlayerManager: MediaPlayerManager) {
         while (_isTimerRunning.value && _currentCycle.value < _numberOfCycles.value) {
             delay(100L)
             if (_currentTime.value > 0) {
@@ -121,15 +124,19 @@ class TimerViewModel : ViewModel() {
                 if (_mode.value == TimerMode.Focus) {
                     _mode.value = TimerMode.Rest
                     _currentTime.value = calculateMillis(_restTime.value)
+                    mediaPlayerManager.playSound(R.raw.rest_start) // // rest start sound
                 } else {
                     _mode.value = TimerMode.Focus
                     _currentTime.value = calculateMillis(_focusTime.value)
                     _currentCycle.value += 1
+                    if (_currentCycle.value < _numberOfCycles.value) {
+                        mediaPlayerManager.playSound(R.raw.focus_start) // focus start sound
+                    }
                 }
             }
         }
         if (_currentCycle.value >= _numberOfCycles.value) {
-            resetTimer()  // reset timer when cycles completed
+            resetTimer() // reset timer when cycles completed
         } else {
             _isTimerRunning.value = false
         }

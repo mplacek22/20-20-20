@@ -110,10 +110,9 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewMod
                 modifier = Modifier.size(dimensionResource(id = R.dimen.timer_size)),
                 strokeWidth = dimensionResource(id = R.dimen.stroke_width),
                 mode = mode,
-                startTimer = { viewModel.startTimer() },
+                startTimer = { viewModel.startTimer(mediaPlayerManager) },
                 stopTimer = { viewModel.stopTimer() },
-                resetTimer = { viewModel.resetTimer() },
-                mediaPlayerManager = mediaPlayerManager
+                resetTimer = { viewModel.resetTimer() }
             )
         }
     }
@@ -136,19 +135,10 @@ fun Timer(
     mode: TimerMode,
     startTimer: () -> Unit,
     stopTimer: () -> Unit,
-    resetTimer: () -> Unit,
-    mediaPlayerManager: MediaPlayerManager
+    resetTimer: () -> Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     val value = currentTime.toFloat() / (if (mode == TimerMode.Focus) focusTime else restTime)
-    val updatedCurrentTime by rememberUpdatedState(currentTime)
-
-    LaunchedEffect(currentTime) {
-        if (updatedCurrentTime <= 0L && isTimerRunning) {
-            val soundRes = if (mode == TimerMode.Focus) R.raw.rest_start else R.raw.focus_start
-            mediaPlayerManager.playSound(soundRes)
-        }
-    }
 
     Box(
         contentAlignment = Alignment.Center,
