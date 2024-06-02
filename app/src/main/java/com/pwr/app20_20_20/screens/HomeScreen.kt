@@ -1,5 +1,7 @@
 package com.pwr.app20_20_20.screens
 
+import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -11,10 +13,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.pwr.app20_20_20.BottomNavigationBar
+import com.pwr.app20_20_20.MediaPlayerManager
 import com.pwr.app20_20_20.R
 import com.pwr.app20_20_20.TopBar
 import com.pwr.app20_20_20.viewmodels.TimerMode
@@ -45,6 +51,8 @@ import kotlin.math.sin
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewModel()) {
+    val context = navController.context
+    val mediaPlayerManager = remember { MediaPlayerManager(context) }
 
     val numberOfCycles by viewModel.numberOfCycles.collectAsState()
     val focusTime by viewModel.focusTime.collectAsState()
@@ -53,6 +61,12 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewMod
     val isTimerRunning by viewModel.isTimerRunning.collectAsState()
     val mode by viewModel.mode.collectAsState()
     val currentCycle by viewModel.currentCycle.collectAsState()
+
+    DisposableEffect(Unit) {
+        onDispose {
+            mediaPlayerManager.release()
+        }
+    }
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) },
@@ -98,7 +112,8 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewMod
                 mode = mode,
                 startTimer = { viewModel.startTimer() },
                 stopTimer = { viewModel.stopTimer() },
-                resetTimer = { viewModel.resetTimer() }
+                resetTimer = { viewModel.resetTimer() },
+                mediaPlayerManager = mediaPlayerManager
             )
         }
     }
@@ -121,10 +136,19 @@ fun Timer(
     mode: TimerMode,
     startTimer: () -> Unit,
     stopTimer: () -> Unit,
-    resetTimer: () -> Unit
+    resetTimer: () -> Unit,
+    mediaPlayerManager: MediaPlayerManager
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     val value = currentTime.toFloat() / (if (mode == TimerMode.Focus) focusTime else restTime)
+    val updatedCurrentTime by rememberUpdatedState(currentTime)
+
+    LaunchedEffect(currentTime) {
+        if (updatedCurrentTime <= 0L && isTimerRunning) {
+            val soundRes = if (mode == TimerMode.Focus) R.raw.rest_start else R.raw.focus_start
+            mediaPlayerManager.playSound(soundRes)
+        }
+    }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -177,7 +201,7 @@ fun Timer(
                 listOf(Offset(center.x + a, center.y + b)),
                 pointMode = PointMode.Points,
                 color = if (mode == TimerMode.Focus) handleColorFocus else handleColorRest,
-                strokeWidth = (strokeWidth * 3f).toPx(),
+                strokeWidth = (strokeWidth * 2.5f).toPx(),
                 cap = StrokeCap.Round
             )
         }

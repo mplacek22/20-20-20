@@ -18,10 +18,10 @@ class TimerViewModel : ViewModel() {
     private val _numberOfCycles = MutableStateFlow(1)
     val numberOfCycles: StateFlow<Int> = _numberOfCycles.asStateFlow()
 
-    private val _focusTime = MutableStateFlow(Time(20, 0))
+    private val _focusTime = MutableStateFlow(Time(0, 5))
     val focusTime: StateFlow<Time> = _focusTime.asStateFlow()
 
-    private val _restTime = MutableStateFlow(Time(0, 20))
+    private val _restTime = MutableStateFlow(Time(0, 3))
     val restTime: StateFlow<Time> = _restTime.asStateFlow()
 
     private val _currentTime = MutableStateFlow(0L)
