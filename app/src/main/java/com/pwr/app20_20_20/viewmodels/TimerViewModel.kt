@@ -128,6 +128,10 @@ class TimerViewModel : ViewModel() {
                 }
             }
         }
-        _isTimerRunning.value = false
+        if (_currentCycle.value >= _numberOfCycles.value) {
+            resetTimer()  // reset timer when cycles completed
+        } else {
+            _isTimerRunning.value = false
+        }
     }
 }
