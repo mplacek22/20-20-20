@@ -21,9 +21,9 @@ val bottomNavItems = listOf(
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    NavigationBar (
+    NavigationBar(
         modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer),
-    ){
+    ) {
         val currentRoute = currentRoute(navController)
         bottomNavItems.forEach { item ->
             val selected = item.route == currentRoute
@@ -39,12 +39,21 @@ fun BottomNavigationBar(navController: NavController) {
                 label = { Text(item.title) },
                 selected = selected,
                 onClick = {
-                    navController.navigate(item.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    if (item.route == NavItem.ToDoListScreen.route) {
+                        navController.navigate(item.route) {
+                            popUpTo(NavItem.ToDoListScreen.route) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    } else {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 }
             )

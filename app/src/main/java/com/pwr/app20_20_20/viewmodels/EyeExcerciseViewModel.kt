@@ -1,13 +1,12 @@
 package com.pwr.app20_20_20.viewmodels
 
-import android.content.Context
-import android.net.Uri
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.pwr.app20_20_20.R
 import com.pwr.app20_20_20.storage.AppDatabase
 import com.pwr.app20_20_20.storage.EyeExercise
+import com.pwr.app20_20_20.util.loadExerciseHistory
+import com.pwr.app20_20_20.util.saveExerciseHistory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,25 +14,16 @@ import kotlinx.coroutines.launch
 import java.time.Clock
 import java.time.LocalDate
 
-//data class EyeExercise(
-//    val id: String,
-//    val name: String,
-//    val instruction: String,
-//    val mediaUri: Uri
-//)
-
-class EyeExerciseViewModel(context: Context) : ViewModel() {
-    private val database = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        "eye_exercises_database"
-    ).build()
+class EyeExerciseViewModel(
+    database: AppDatabase,
+    private val sharedPreferences: SharedPreferences
+) : ViewModel() {
 
     private val eyeExerciseDao = database.eyeExerciseDao()
 
     val exercises: Flow<List<EyeExercise>> = eyeExerciseDao.getAllExercises()
 
-    private val _history = MutableStateFlow<Map<String, List<LocalDate>>>(emptyMap())
+    private val _history = MutableStateFlow(loadExerciseHistory(sharedPreferences))
     val history = _history.asStateFlow()
 
     fun recordExerciseDone(exerciseId: String) {
@@ -48,6 +38,7 @@ class EyeExerciseViewModel(context: Context) : ViewModel() {
             }
 
             _history.value = updatedHistory
+            saveExerciseHistory(sharedPreferences, updatedHistory)
         }
     }
 

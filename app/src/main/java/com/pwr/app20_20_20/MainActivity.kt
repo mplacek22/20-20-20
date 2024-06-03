@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.pwr.app20_20_20.storage.EyeExercise
 import com.pwr.app20_20_20.storage.MediaType
 import com.pwr.app20_20_20.ui.theme.AppTheme
+import com.pwr.app20_20_20.util.SharedPreferencesModule
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModel
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModelFactory
 import com.pwr.app20_20_20.viewmodels.TimerViewModel
@@ -17,12 +18,16 @@ import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    private val timerViewModel: TimerViewModel by viewModels {
-        TimerViewModelFactory()
+    private val sharedPreferences by lazy {
+        SharedPreferencesModule.provideSharedPreferences(applicationContext)
     }
 
     private val eyeExerciseViewModel: EyeExerciseViewModel by viewModels {
-        EyeExerciseViewModelFactory(applicationContext)
+        EyeExerciseViewModelFactory(applicationContext, sharedPreferences)
+    }
+
+    private val timerViewModel: TimerViewModel by viewModels {
+        TimerViewModelFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

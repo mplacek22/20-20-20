@@ -42,7 +42,7 @@ fun Navigation (timerViewModel : TimerViewModel, exerciseViewModel: EyeExerciseV
             )
         ) { backStackEntry ->
             val exerciseId = backStackEntry.arguments?.getString("exerciseId") ?: throw IllegalStateException("Exercise ID is required")
-            ExerciseScreen(viewModel = exerciseViewModel, exerciseId = backStackEntry.arguments?.getString("exerciseId") ?: "", navController = navController)
+            ExerciseScreen(viewModel = exerciseViewModel, exerciseId = exerciseId, navController = navController)
         }
     }
 }
