@@ -28,10 +28,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.pwr.app20_20_20.BottomNavigationBar
-import com.pwr.app20_20_20.NavItem
+import com.pwr.app20_20_20.composables.BottomNavigationBar
+import com.pwr.app20_20_20.navigation.NavItem
 import com.pwr.app20_20_20.R
-import com.pwr.app20_20_20.TopBar
+import com.pwr.app20_20_20.composables.TopBar
 import com.pwr.app20_20_20.storage.EyeExercise
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModel
 

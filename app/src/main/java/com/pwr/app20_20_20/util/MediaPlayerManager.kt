@@ -1,4 +1,4 @@
-package com.pwr.app20_20_20
+package com.pwr.app20_20_20.util
 
 import android.content.Context
 import android.media.MediaPlayer

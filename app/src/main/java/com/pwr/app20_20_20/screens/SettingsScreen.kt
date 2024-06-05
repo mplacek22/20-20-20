@@ -36,9 +36,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.pwr.app20_20_20.BottomNavigationBar
+import com.pwr.app20_20_20.composables.BottomNavigationBar
 import com.pwr.app20_20_20.R
-import com.pwr.app20_20_20.TopBar
+import com.pwr.app20_20_20.composables.TopBar
 import com.pwr.app20_20_20.viewmodels.TimerViewModel
 
 @Composable

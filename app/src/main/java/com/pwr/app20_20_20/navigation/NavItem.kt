@@ -1,4 +1,4 @@
-package com.pwr.app20_20_20
+package com.pwr.app20_20_20.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List

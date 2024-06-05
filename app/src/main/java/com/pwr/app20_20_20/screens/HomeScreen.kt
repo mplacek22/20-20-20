@@ -1,7 +1,5 @@
 package com.pwr.app20_20_20.screens
 
-import android.content.Context
-import android.media.MediaPlayer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -14,12 +12,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +26,7 @@ import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,10 +35,10 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.pwr.app20_20_20.BottomNavigationBar
-import com.pwr.app20_20_20.MediaPlayerManager
+import com.pwr.app20_20_20.composables.BottomNavigationBar
+import com.pwr.app20_20_20.util.MediaPlayerManager
 import com.pwr.app20_20_20.R
-import com.pwr.app20_20_20.TopBar
+import com.pwr.app20_20_20.composables.TopBar
 import com.pwr.app20_20_20.viewmodels.TimerMode
 import com.pwr.app20_20_20.viewmodels.TimerViewModel
 import kotlin.math.PI
@@ -103,10 +100,10 @@ fun HomeScreen(navController: NavController, viewModel: TimerViewModel = viewMod
                 restTime = viewModel.calculateMillis(restTime),
                 currentTime = currentTime,
                 isTimerRunning = isTimerRunning,
-                handleColorFocus = Color(0xFF0FB04C),
-                handleColorRest = Color(0xFFFF9800),
-                activeBarColorFocus = Color(0xFF0FB04C),
-                activeBarColorRest = Color(0xFFFF9800),
+                handleColorFocus = colorResource(id = R.color.focus),
+                handleColorRest = colorResource(id = R.color.rest),
+                activeBarColorFocus = colorResource(id = R.color.focus),
+                activeBarColorRest = colorResource(id = R.color.rest),
                 modifier = Modifier.size(dimensionResource(id = R.dimen.timer_size)),
                 strokeWidth = dimensionResource(id = R.dimen.stroke_width),
                 mode = mode,
@@ -125,12 +122,12 @@ fun Timer(
     restTime: Long,
     currentTime: Long,
     isTimerRunning: Boolean,
-    handleColorFocus: Color = Color(0xFF0FB04C),
+    modifier: Modifier = Modifier,
+    handleColorFocus: Color = colorResource(id = R.color.focus),
     handleColorRest: Color = Color.Red,
     inactiveBarColor: Color = Color.DarkGray,
-    activeBarColorFocus: Color = Color(0xFF0FB04C),
-    activeBarColorRest: Color = Color(0xFFF44336),
-    modifier: Modifier = Modifier,
+    activeBarColorFocus: Color = colorResource(id = R.color.focus),
+    activeBarColorRest: Color = colorResource(id = R.color.rest),
     strokeWidth: Dp = dimensionResource(id = R.dimen.stroke_width),
     mode: TimerMode,
     startTimer: () -> Unit,

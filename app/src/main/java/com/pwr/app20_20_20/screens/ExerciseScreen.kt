@@ -30,10 +30,9 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import com.pwr.app20_20_20.BottomNavigationBar
+import com.pwr.app20_20_20.composables.BottomNavigationBar
 import com.pwr.app20_20_20.R
-import com.pwr.app20_20_20.TopBar
+import com.pwr.app20_20_20.composables.TopBar
 import com.pwr.app20_20_20.storage.EyeExercise
 import com.pwr.app20_20_20.storage.MediaType
 import com.pwr.app20_20_20.viewmodels.EyeExerciseViewModel

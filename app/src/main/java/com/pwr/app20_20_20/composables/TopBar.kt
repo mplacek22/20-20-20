@@ -1,4 +1,4 @@
-package com.pwr.app20_20_20
+package com.pwr.app20_20_20.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.pwr.app20_20_20.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

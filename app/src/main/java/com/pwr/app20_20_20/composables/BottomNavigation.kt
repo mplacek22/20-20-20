@@ -1,4 +1,4 @@
-package com.pwr.app20_20_20
+package com.pwr.app20_20_20.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.material3.Icon
@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.pwr.app20_20_20.navigation.NavItem
 
 val bottomNavItems = listOf(
     NavItem.HomeScreen,

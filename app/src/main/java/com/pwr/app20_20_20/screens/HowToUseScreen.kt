@@ -40,9 +40,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.ContentAlpha
-import com.pwr.app20_20_20.BottomNavigationBar
+import com.pwr.app20_20_20.composables.BottomNavigationBar
 import com.pwr.app20_20_20.R
-import com.pwr.app20_20_20.TopBar
+import com.pwr.app20_20_20.composables.TopBar
 
 @Composable
 fun HowToUseScreen(navController: NavController) {

@@ -2,14 +2,13 @@ package com.pwr.app20_20_20.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pwr.app20_20_20.MediaPlayerManager
+import com.pwr.app20_20_20.util.MediaPlayerManager
 import com.pwr.app20_20_20.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
 
 enum class TimerMode {
     Focus, Rest
@@ -39,7 +38,7 @@ class TimerViewModel : ViewModel() {
     val currentCycle: StateFlow<Int> = _currentCycle.asStateFlow()
 
     val cycleRange = 1..10
-    val timeRange = 0..59 // Assuming you want a range of 0 to 59 for both minutes and seconds
+    val timeRange = 0..59
 
     init {
         resetTimer()
