@@ -319,7 +319,3 @@ val onCustomColor4DarkHighContrast = Color(0xFF000000)
 val customColor4ContainerDarkHighContrast = Color(0xFF9AD9AA)
 val onCustomColor4ContainerDarkHighContrast = Color(0xFF000000)
 
-val restColor = Color(0xFFFF9800)
-val focusColor = Color(0xFF0FB04C)
-val activeBarColorRest = Color(0xFFF44336)
-
