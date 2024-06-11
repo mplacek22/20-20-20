@@ -2,21 +2,20 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="HomeScreenTest">
+        <State />
+      </entry>
+      <entry key="TestHomeScreenDisplaysCorrectly()">
+        <State />
+      </entry>
       <entry key="app">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\User\.android\avd\Pixel_6_Pro_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-05T15:22:02.148954Z" />
-        </State>
+        <State />
+      </entry>
+      <entry key="testHomeScreenDisplaysCorrectly()">
+        <State />
+      </entry>
+      <entry key="testStartButtonFunctionality()">
+        <State />
       </entry>
     </value>
   </component>
