@@ -2,19 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="HomeScreenTest">
-        <State />
-      </entry>
-      <entry key="TestHomeScreenDisplaysCorrectly()">
+      <entry key="DatabaseTest">
         <State />
       </entry>
       <entry key="app">
-        <State />
-      </entry>
-      <entry key="testHomeScreenDisplaysCorrectly()">
-        <State />
-      </entry>
-      <entry key="testStartButtonFunctionality()">
         <State />
       </entry>
     </value>

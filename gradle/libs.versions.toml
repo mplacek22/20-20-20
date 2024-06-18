@@ -2,6 +2,7 @@
 agp = "8.3.1"
 coilCompose = "2.0.0"
 coreTesting = "2.2.0"
+espressoCoreVersion = "3.4.0"
 jetbrainsKotlinxCoroutinesTest = "1.9.0-RC"
 kotlin = "1.9.0"
 coreKtx = "1.12.0"
@@ -17,7 +18,9 @@ materialIconsExtended = "1.6.7"
 mockitoCore = "3.9.0"
 mockitoCoreVersion = "4.2.0"
 mockitoKotlin = "5.2.1"
+mockitoKotlinVersion = "3.2.0"
 mockitoMockitoCore = "5.2.1"
+mockitoMockitoCoreVersion = "3.12.4"
 navigationCompose = "2.7.7"
 composeMaterial = "1.3.1"
 roomRuntime = "2.6.1"
@@ -29,6 +32,7 @@ media3Exoplayer = "1.3.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
@@ -57,9 +61,11 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-coroutines-test-v160 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
 kotlinx-coroutines-test-v190RC = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "jetbrainsKotlinxCoroutinesTest" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-core-v3124 = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCoreVersion" }
 mockito-core-v420 = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 mockito-core-v521 = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCore" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-kotlin-v320 = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlinVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -83,6 +83,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation("androidx.room:room-testing:$room_version")
     testImplementation(libs.mockito.core.v521)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.androidx.core.testing)
