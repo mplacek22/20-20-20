@@ -5,7 +5,16 @@
       <entry key="DatabaseTest">
         <State />
       </entry>
+      <entry key="EyeExerciseIntegrationTest">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="testGetAllExercises()">
+        <State />
+      </entry>
+      <entry key="testInsertAndGetExercise()">
         <State />
       </entry>
     </value>

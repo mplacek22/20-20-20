@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.junit.ktx)
 
     val room_version = "2.6.1"
 
@@ -84,6 +85,8 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation("androidx.room:room-testing:$room_version")
+    androidTestImplementation(libs.androidx.core.testing.v210)
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation(libs.mockito.core.v521)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.androidx.core.testing)

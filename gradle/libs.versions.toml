@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.1"
+androidxCoreTesting = "2.1.0"
 coilCompose = "2.0.0"
 coreTesting = "2.2.0"
 espressoCoreVersion = "3.4.0"
@@ -28,10 +29,12 @@ uiTextGoogleFonts = "1.6.7"
 media3Common = "1.3.1"
 media3Ui = "1.3.1"
 media3Exoplayer = "1.3.1"
+junitKtx = "1.1.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-core-testing-v210 = { module = "androidx.arch.core:core-testing", version.ref = "androidxCoreTesting" }
 androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
@@ -66,6 +69,7 @@ mockito-core-v420 = { module = "org.mockito:mockito-core", version.ref = "mockit
 mockito-core-v521 = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCore" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 mockito-kotlin-v320 = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlinVersion" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

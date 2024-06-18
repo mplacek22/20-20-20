@@ -7,6 +7,7 @@ import com.pwr.app20_20_20.storage.AppDatabase
 import com.pwr.app20_20_20.storage.EyeExercise
 import com.pwr.app20_20_20.util.loadExerciseHistory
 import com.pwr.app20_20_20.util.saveExerciseHistory
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,14 +56,14 @@ class EyeExerciseViewModel(
         return eyeExerciseDao.getAllExercisesList()
     }
 
-    fun insertExercise(exercise: EyeExercise) {
-        viewModelScope.launch {
+    fun insertExercise(exercise: EyeExercise) : Job {
+        return viewModelScope.launch {
             eyeExerciseDao.insertExercise(exercise)
         }
     }
 
-    fun insertAllExercises(exercises: List<EyeExercise>) {
-        viewModelScope.launch {
+    fun insertAllExercises(exercises: List<EyeExercise>) : Job {
+        return viewModelScope.launch {
             eyeExerciseDao.insertAll(exercises)
         }
     }
